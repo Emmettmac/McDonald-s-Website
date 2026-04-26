@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>McDonald's — I'm Lovin' It</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow: #FFC72C;
+  --red: #DA291C;
+  --dark: #27251F;
+  --dark2: #1a1916;
+  --white: #FFFFFF;
+  --gray: #f5f5f0;
+  --text-muted: #7a7a6e;
+  --radius: 18px;
+  --shadow: 0 8px 40px rgba(0,0,0,0.12);
+  --shadow-hover: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .logo-text { font-family: 'Fredoka One', cursive; }
+
+/* ===== NAVBAR ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 5%;
+  transition: all 0.35s ease;
+  background: transparent;
+}
+nav.scrolled {
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.1);
+  padding: 12px 5%;
+}
+.logo-text {
+  font-size: 2.4rem;
+  color: var(--yellow);
+  text-shadow: 3px 3px 0 var(--red);
+  cursor: pointer;
+  letter-spacing: -1px;
+  transition: transform 0.2s;
+}
+.logo-text:hover { transform: scale(1.08) rotate(-3deg); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--white);
+  transition: color 0.2s;
+  letter-spacing: 0.5px;
+}
+nav.scrolled .nav-links a { color: var(--dark); }
+.nav-links a:hover { color: var(--yellow); }
+nav.scrolled .nav-links a:hover { color: var(--red); }
+
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+
+.btn-order {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 11px 26px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+}
+.btn-order:hover { background: #b81f13; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(218,41,28,0.4); }
+
+.cart-btn {
+  position: relative;
+  background: var(--yellow);
+  border: none;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.cart-btn:hover { transform: scale(1.1); }
+.cart-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  background: var(--red);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 900;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  display: none;
+}
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2.5px; background: white; border-radius: 2px; transition: all 0.3s; }
+nav.scrolled .hamburger span { background: var(--dark); }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  background: var(--dark2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(255,199,44,0.18) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(218,41,28,0.2) 0%, transparent 50%),
+              var(--dark2);
+}
+
+.hero-blobs {
+  position: absolute; inset: 0;
+  overflow: hidden;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  animation: float 8s ease-in-out infinite;
+}
+.blob1 { width: 500px; height: 500px; background: var(--yellow); top: -100px; right: -100px; animation-delay: 0s; }
+.blob2 { width: 350px; height: 350px; background: var(--red); bottom: -80px; left: 10%; animation-delay: -3s; }
+.blob3 { width: 250px; height: 250px; background: var(--yellow); top: 60%; right: 20%; animation-delay: -5s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 120px 5% 80px;
+}
+
+.hero-left { }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,199,44,0.15);
+  border: 1px solid rgba(255,199,44,0.3);
+  color: var(--yellow);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.eyebrow-dot { width: 6px; height: 6px; background: var(--yellow); border-radius: 50%; animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero h1 {
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 1.2rem;
+  letter-spacing: -1px;
+}
+.hero h1 span { color: var(--yellow); }
+
+.hero-sub {
+  color: rgba(255,255,255,0.7);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 480px;
+  font-weight: 600;
+}
+
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+
+.btn-primary {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: #b81f13; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(218,41,28,0.5); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+  padding: 14px 34px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.btn-outline:hover { background: var(--yellow); color: var(--dark); transform: translateY(-3px); }
+
+.hero-timer {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 16px 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+}
+.timer-label { color: rgba(255,255,255,0.6); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.5px; }
+.timer-display {
+  display: flex; gap: 6px; align-items: center;
+}
+.timer-unit {
+  background: var(--yellow);
+  color: var(--dark);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  padding: 4px 10px;
+  border-radius: 8px;
+  min-width: 48px;
+  text-align: center;
+}
+.timer-sep { color: var(--yellow); font-weight: 900; font-size: 1.2rem; }
+
+/* Hero food visual */
+.hero-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.food-scene {
+  position: relative;
+  width: 420px;
+  height: 420px;
+}
+
+.food-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(255,199,44,0.25) 0%, rgba(218,41,28,0.12) 60%, transparent 80%);
+  border: 1px solid rgba(255,199,44,0.15);
+  animation: spin-slow 20s linear infinite;
+}
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+
+.food-emoji {
+  position: absolute;
+  font-size: 4rem;
+  animation: orbit 6s ease-in-out infinite;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
+}
+.food-emoji:nth-child(2) { top: 10%; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
+.food-emoji:nth-child(3) { top: 50%; right: 5%; transform: translateY(-50%); animation-delay: -2s; font-size: 3rem; }
+.food-emoji:nth-child(4) { bottom: 10%; left: 50%; transform: translateX(-50%); animation-delay: -4s; font-size: 3.5rem; }
+.food-emoji:nth-child(5) { top: 50%; left: 5%; transform: translateY(-50%); animation-delay: -1s; font-size: 2.8rem; }
+
+@keyframes orbit {
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50% { transform: translateY(-18px) translateX(-50%); }
+}
+
+.hero-burger {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 9rem;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+  animation: bob 3s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes bob {
+  0%,100%{transform:translate(-50%,-50%) scale(1);}
+  50%{transform:translate(-50%,-55%) scale(1.04);}
+}
+
+.floating-tag {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  padding: 8px 16px;
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  animation: float-tag 4s ease-in-out infinite;
+}
+.tag1 { top: 12%; right: 0; animation-delay: 0s; color: var(--red); }
+.tag2 { bottom: 20%; left: 0; animation-delay: -2s; color: var(--dark); }
+@keyframes float-tag {
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+/* ===== SECTION COMMON ===== */
+section { padding: 100px 5%; }
+.section-label {
+  display: inline-block;
+  background: rgba(255,199,44,0.15);
+  color: var(--red);
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--dark);
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+.section-sub {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 540px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+
+/* fade in on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ===== MENU SECTION ===== */
+.menu-section { background: var(--gray); }
+.menu-header { text-align: center; margin-bottom: 3.5rem; }
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.menu-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.menu-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--yellow), var(--red));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.menu-card:hover::before { transform: scaleX(1); }
+.menu-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+
+.menu-card .item-emoji { font-size: 4.5rem; display: block; margin-bottom: 1rem; }
+.menu-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--dark); }
+.menu-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.2rem; font-weight: 600; }
+.menu-price { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: var(--red); margin-bottom: 1.2rem; display: block; }
+
+.btn-add {
+  background: var(--dark);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+}
+.btn-add:hover { background: var(--red); transform: scale(1.03); }
+.btn-add.added { background: #1a7b4b; }
+
+/* ===== DEALS ===== */
+.deals-section { background: var(--dark2); }
+.deals-header { text-align: center; margin-bottom: 3.5rem; }
+.deals-header .section-title { color: white; }
+.deals-header .section-sub { color: rgba(255,255,255,0.6); margin: 0 auto; }
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.deal-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+.deal-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-6px); border-color: rgba(255,199,44,0.3); }
+
+.limited-badge {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: var(--red);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+}
+.deal-emoji { font-size: 3.5rem; margin-bottom: 1rem; display: block; }
+.deal-card h3 { font-family: 'Fredoka One', cursive; color: white; font-size: 1.5rem; margin-bottom: 0.5rem; }
+.deal-card p { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 600; line-height: 1.6; }
+.deal-savings { color: var(--yellow); font-weight: 800; font-size: 0.88rem; margin-bottom: 1.2rem; display: block; }
+
+.btn-deal {
+  background: var(--yellow);
+  color: var(--dark);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+}
+.btn-deal:hover { background: white; transform: scale(1.03); }
+
+/* ===== HOW IT WORKS ===== */
+.how-section { background: white; }
+.how-inner { max-width: 1100px; margin: 0 auto; }
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3.5rem;
+  position: relative;
+}
+.how-grid::before {
+  content: '';
+  position: absolute;
+  top: 50px; left: 16%; right: 16%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--yellow), var(--red), var(--yellow));
+  z-index: 0;
+}
+.how-step {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.step-icon {
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, var(--yellow), #ffad00);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.8rem;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 24px rgba(255,199,44,0.4);
+  transition: transform 0.3s;
+}
+.how-step:hover .step-icon { transform: scale(1.1) rotate(5deg); }
+.step-num {
+  position: absolute;
+  top: -8px; right: calc(50% - 64px);
+  background: var(--red);
+  color: white;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.how-step h3 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; margin-bottom: 0.6rem; color: var(--dark); }
+.how-step p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; font-weight: 600; }
+
+/* ===== REWARDS ===== */
+.rewards-section {
+  background: linear-gradient(135deg, var(--dark2) 0%, #2d2a22 100%);
+  position: relative;
+  overflow: hidden;
+}
+.rewards-section::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,199,44,0.1) 0%, transparent 60%);
+}
+.rewards-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.rewards-left .section-title { color: white; }
+.rewards-left .section-sub { color: rgba(255,255,255,0.6); margin-bottom: 2rem; }
+
+.points-stat {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.stat-item { }
+.stat-num { font-family: 'Fredoka One', cursive; font-size: 2.5rem; color: var(--yellow); display: block; }
+.stat-txt { color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 700; }
+
+.progress-section { margin-bottom: 2rem; }
+.progress-label { display: flex; justify-content: space-between; color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
+.progress-bar {
+  height: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 50px;
+  background: linear-gradient(90deg, var(--yellow), var(--red));
+  width: 0;
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rewards-ctas { display: flex; gap: 1rem; }
+.btn-rewards {
+  background: var(--yellow);
+  color: var(--dark);
+  border: none;
+  padding: 14px 30px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.btn-rewards:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,199,44,0.4); }
+.btn-rewards-out {
+  background: transparent;
+  color: var(--yellow);
+  border: 2px solid rgba(255,199,44,0.4);
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.btn-rewards-out:hover { border-color: var(--yellow); background: rgba(255,199,44,0.1); }
+
+/* Loyalty card */
+.loyalty-card {
+  background: linear-gradient(135deg, #1a1916 0%, #2d2a22 50%, var(--red) 100%);
+  border-radius: 24px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  aspect-ratio: 1.6/1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.loyalty-card::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 200px; height: 200px;
+  background: rgba(255,199,44,0.15);
+  border-radius: 50%;
+}
+.loyalty-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: 30px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+.card-logo { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--yellow); }
+.card-name { color: rgba(255,255,255,0.5); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; margin-top: 0.5rem; }
+.card-points { font-family: 'Fredoka One', cursive; font-size: 3rem; color: white; }
+.card-points-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+.card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.card-member { }
+.card-member-name { color: white; font-weight: 800; font-size: 1rem; }
+.card-member-since { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
+.card-circles { display: flex; gap: -4px; }
+.card-circle { width: 32px; height: 32px; border-radius: 50%; opacity: 0.7; }
+.card-circle:first-child { background: var(--yellow); margin-right: -10px; }
+.card-circle:last-child { background: var(--red); }
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-section { background: var(--gray); overflow: hidden; }
+.testimonials-inner { max-width: 1100px; margin: 0 auto; }
+.testimonials-header { text-align: center; margin-bottom: 3rem; }
+.carousel-wrapper { position: relative; overflow: hidden; }
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  transition: transform 0.5s ease;
+}
+.review-card {
+  flex: 0 0 calc(33.333% - 1rem);
+  background: white;
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+.stars { color: var(--yellow); font-size: 1.2rem; margin-bottom: 1rem; letter-spacing: 2px; }
+.review-text { color: var(--dark); font-size: 0.95rem; line-height: 1.7; font-weight: 600; margin-bottom: 1.5rem; font-style: italic; }
+.reviewer { display: flex; align-items: center; gap: 12px; }
+.reviewer-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--yellow), var(--red));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  color: white;
+  flex-shrink: 0;
+}
+.reviewer-name { font-weight: 800; font-size: 0.95rem; color: var(--dark); }
+.reviewer-tag { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+
+.carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 2rem; }
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+.dot.active { background: var(--red); width: 24px; border-radius: 4px; }
+
+/* ===== FINDER ===== */
+.finder-section { background: white; }
+.finder-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+.finder-inner .section-sub { margin: 0 auto 2.5rem; }
+
+.search-bar {
+  display: flex;
+  gap: 0;
+  background: white;
+  border: 2px solid #e8e8e0;
+  border-radius: 50px;
+  overflow: hidden;
+  max-width: 560px;
+  margin: 0 auto 2.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-bar:focus-within { border-color: var(--yellow); box-shadow: 0 4px 24px rgba(255,199,44,0.2); }
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 16px 24px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark);
+  background: transparent;
+}
+.search-bar button {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 0 50px 50px 0;
+  white-space: nowrap;
+}
+.search-bar button:hover { background: #b81f13; }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.2rem;
+  text-align: left;
+  display: none;
+}
+.result-card {
+  background: var(--gray);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid #e8e8e0;
+  transition: all 0.25s;
+}
+.result-card:hover { border-color: var(--yellow); box-shadow: var(--shadow); }
+.result-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+.result-name { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--dark); }
+.open-badge { background: #d4edda; color: #1a5c32; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; white-space: nowrap; }
+.closed-badge { background: #f8d7da; color: #7b1c23; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; }
+.result-addr { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.5; }
+.result-meta { display: flex; gap: 12px; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; }
+.result-meta span { display: flex; align-items: center; gap: 4px; }
+.btn-directions {
+  background: var(--dark);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.btn-directions:hover { background: var(--red); }
+
+/* ===== APP BANNER ===== */
+.app-section {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.app-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,199,44,0.08)'/%3E%3C/svg%3E") repeat;
+}
+.app-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.app-left .section-title { color: white; margin-bottom: 1rem; }
+.app-left .section-sub { color: rgba(255,255,255,0.6); margin-bottom: 2rem; }
+.app-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-store {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+}
+.btn-store:hover { background: rgba(255,255,255,0.15); border-color: var(--yellow); transform: translateY(-2px); }
+.store-icon { font-size: 1.8rem; }
+.store-text { text-align: left; }
+.store-sub { display: block; font-size: 0.68rem; color: rgba(255,255,255,0.5); font-weight: 600; }
+.store-name { display: block; font-weight: 800; font-size: 1rem; }
+
+.phone-mockup {
+  width: 180px;
+  height: 360px;
+  background: linear-gradient(135deg, #2a2724 0%, #1a1916 100%);
+  border-radius: 36px;
+  border: 3px solid rgba(255,255,255,0.12);
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+.phone-screen {
+  position: absolute;
+  inset: 8px;
+  border-radius: 28px;
+  background: linear-gradient(160deg, var(--dark2) 0%, #1a1510 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 14px;
+}
+.phone-logo { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--yellow); text-shadow: 2px 2px 0 var(--red); margin-bottom: 12px; }
+.phone-card {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+.phone-card-title { font-size: 0.55rem; font-weight: 800; color: var(--yellow); margin-bottom: 3px; }
+.phone-card-text { font-size: 0.6rem; color: rgba(255,255,255,0.6); font-weight: 600; }
+.phone-notch { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 60px; height: 6px; background: rgba(0,0,0,0.5); border-radius: 3px; z-index: 2; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--dark2);
+  padding: 70px 5% 30px;
+  color: rgba(255,255,255,0.6);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+.footer-brand .logo-text { margin-bottom: 1rem; display: block; }
+.footer-brand p { font-size: 0.88rem; line-height: 1.7; font-weight: 600; max-width: 260px; }
+.footer-newsletter { margin-top: 1.5rem; display: flex; gap: 0; }
+.footer-newsletter input {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px 0 0 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+}
+.footer-newsletter button {
+  background: var(--yellow);
+  color: var(--dark);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 0 8px 8px 0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.footer-newsletter button:hover { background: white; }
+
+.footer-col h4 { font-family: 'Fredoka One', cursive; color: white; font-size: 1.1rem; margin-bottom: 1.2rem; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.7rem; }
+.footer-col ul li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.88rem; font-weight: 600; transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--yellow); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: gap;
+  gap: 1rem;
+}
+.social-links { display: flex; gap: 12px; }
+.social-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.social-btn:hover { background: var(--yellow); border-color: var(--yellow); transform: translateY(-2px); }
+.footer-copy { font-size: 0.82rem; font-weight: 600; }
+
+/* ===== CART DRAWER ===== */
+.cart-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(4px);
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+
+.cart-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: 380px;
+  max-width: 90vw;
+  height: 100vh;
+  background: white;
+  z-index: 2001;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+.cart-drawer.open { transform: none; }
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #f0f0e8;
+}
+.cart-header h3 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; }
+.cart-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+.cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+.cart-empty { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+.cart-empty .empty-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+.cart-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f5f5f0; }
+.cart-item-emoji { font-size: 2.2rem; }
+.cart-item-info { flex: 1; }
+.cart-item-name { font-weight: 800; font-size: 0.9rem; color: var(--dark); }
+.cart-item-price { color: var(--red); font-weight: 700; font-size: 0.85rem; }
+.cart-item-qty { display: flex; align-items: center; gap: 8px; }
+.qty-btn { background: var(--gray); border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-weight: 900; font-size: 0.9rem; transition: background 0.2s; }
+.qty-btn:hover { background: var(--yellow); }
+.qty-num { font-weight: 800; font-size: 0.9rem; min-width: 20px; text-align: center; }
+
+.cart-footer { padding: 1.5rem; border-top: 1px solid #f0f0e8; }
+.cart-total { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+.cart-total span:first-child { font-weight: 700; color: var(--text-muted); }
+.cart-total span:last-child { font-family: 'Fredoka One', cursive; font-size: 1.4rem; color: var(--dark); }
+.btn-checkout {
+  width: 100%;
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-bottom: 0.6rem;
+}
+.btn-checkout:hover { background: #b81f13; transform: scale(1.02); }
+.btn-clear { width: 100%; background: none; border: none; color: var(--text-muted); font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; padding: 8px; }
+.btn-clear:hover { color: var(--red); }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(6px);
+  padding: 1rem;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.3s;
+}
+.modal-overlay.open .modal { transform: scale(1); }
+.modal-emoji { font-size: 4rem; display: block; margin-bottom: 1rem; }
+.modal h3 { font-family: 'Fredoka One', cursive; font-size: 1.8rem; margin-bottom: 0.5rem; }
+.modal p { color: var(--text-muted); font-size: 0.95rem; font-weight: 600; margin-bottom: 1.5rem; }
+.promo-code {
+  background: var(--gray);
+  border: 2px dashed var(--yellow);
+  border-radius: 12px;
+  padding: 1rem;
+  font-family: 'Fredoka One', cursive;
+  font-size: 2rem;
+  color: var(--red);
+  letter-spacing: 4px;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+.modal-close {
+  background: var(--dark);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.modal-close:hover { background: var(--red); }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--dark);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  z-index: 9999;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== MOBILE ===== */
+@media (max-width: 900px) {
+  .hero-content { grid-template-columns: 1fr; text-align: center; }
+  .hero-right { display: none; }
+  .hero-ctas { justify-content: center; }
+  .hero-timer { justify-content: center; }
+  .how-grid { grid-template-columns: 1fr; }
+  .how-grid::before { display: none; }
+  .rewards-inner { grid-template-columns: 1fr; }
+  .loyalty-card { max-width: 400px; }
+  .app-inner { grid-template-columns: 1fr; }
+  .phone-mockup { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .review-card { flex: 0 0 calc(100% - 1rem); }
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
+@media (max-width: 600px) {
+  section { padding: 70px 5%; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .deals-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar" aria-label="Main navigation">
+  <div class="logo-text" onclick="scrollTo(0,0)" aria-label="McDonald's home">M</div>
+  <ul class="nav-links" role="list">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#deals">Deals</a></li>
+    <li><a href="#rewards">Rewards</a></li>
+    <li><a href="#finder">Restaurants</a></li>
+    <li><a href="#app">App</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" id="cart-btn" onclick="toggleCart()" aria-label="Open cart">
+      🛒
+      <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+    <button class="btn-order" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Order Now</button>
+    <div class="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-blobs">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        Now Serving Happiness Daily
+      </div>
+      <h1>Loving It Has Never Been This <span>Easy</span></h1>
+      <p class="hero-sub">Order ahead, skip the queue, and earn rewards on every single bite. Fast food, done beautifully.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">
+          🍔 Order Now
+        </button>
+        <button class="btn-outline" onclick="document.getElementById('finder').scrollIntoView({behavior:'smooth'})">
+          📍 Find a Restaurant
+        </button>
+      </div>
+      <div class="hero-timer">
+        <span class="timer-label">🔥 Today's Deal Ends In</span>
+        <div class="timer-display">
+          <span class="timer-unit" id="t-h">00</span>
+          <span class="timer-sep">:</span>
+          <span class="timer-unit" id="t-m">00</span>
+          <span class="timer-sep">:</span>
+          <span class="timer-unit" id="t-s">00</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="food-scene">
+        <div class="food-circle"></div>
+        <span class="food-emoji">🍟</span>
+        <span class="food-emoji">🥤</span>
+        <span class="food-emoji">🍦</span>
+        <span class="food-emoji">🥧</span>
+        <div class="hero-burger">🍔</div>
+        <div class="floating-tag tag1">⭐ 4.8 Rating</div>
+        <div class="floating-tag tag2">🚀 15 min delivery</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section reveal" id="menu">
+  <div class="menu-header">
+    <div class="section-label">Fan Favourites</div>
+    <h2 class="section-title">What's on the Menu?</h2>
+    <p class="section-sub" style="margin:0 auto;">Crafted with quality ingredients, loved by millions. Pick your favourite.</p>
+  </div>
+  <div class="menu-grid" id="menu-grid"></div>
+</section>
+
+<!-- DEALS -->
+<section class="deals-section reveal" id="deals">
+  <div class="deals-header">
+    <div class="section-label">Limited Time</div>
+    <h2 class="section-title">Hot Deals 🔥</h2>
+    <p class="section-sub">Grab these while you can — these deals won't be around forever.</p>
+  </div>
+  <div class="deals-grid" id="deals-grid"></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section reveal">
+  <div class="how-inner">
+    <div style="text-align:center; margin-bottom:0;">
+      <div class="section-label">Simple as that</div>
+      <h2 class="section-title">Order in 3 Easy Steps</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="step-num">1</div>
+        <div class="step-icon">📍</div>
+        <h3>Find Your Nearest</h3>
+        <p>Use our restaurant finder to locate the closest McDonald's. Check hours, drive-thru availability, and real-time status.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🍔</div>
+        <h3>Build Your Meal</h3>
+        <p>Choose from our full menu, customise every item exactly how you like it, and add extras with just a tap.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🚗</div>
+        <h3>Pick Up or Deliver</h3>
+        <p>Drive-thru, click &amp; collect, or door-to-door delivery — you choose how you want your order.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REWARDS -->
+<section class="rewards-section reveal" id="rewards">
+  <div class="rewards-inner">
+    <div class="rewards-left">
+      <div class="section-label">Earn Every Day</div>
+      <h2 class="section-title">MyMcDonald's Rewards</h2>
+      <p class="section-sub">Every order earns you points. Every point gets you closer to free food. It's that simple.</p>
+      <div class="points-stat">
+        <div class="stat-item">
+          <span class="stat-num">100</span>
+          <span class="stat-txt">Points per $1 spent</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">12M+</span>
+          <span class="stat-txt">Members worldwide</span>
+        </div>
+      </div>
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Your progress</span>
+          <span>250 / 500 pts — Free item</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+      <div class="rewards-ctas">
+        <button class="btn-rewards" onclick="showToast('🎉 Welcome to MyMcDonald\'s Rewards!')">Sign Up Free</button>
+        <button class="btn-rewards-out" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Learn More</button>
+      </div>
+    </div>
+    <div class="rewards-right">
+      <div class="loyalty-card">
+        <div>
+          <div class="card-logo">M</div>
+          <div class="card-name">MYMCDONALD'S REWARDS</div>
+        </div>
+        <div>
+          <div class="card-points" id="animated-points">250</div>
+          <div class="card-points-label">TOTAL POINTS</div>
+        </div>
+        <div class="card-bottom">
+          <div class="card-member">
+            <div class="card-member-name">Alex Johnson</div>
+            <div class="card-member-since">Member since 2022</div>
+          </div>
+          <div class="card-circles">
+            <div class="card-circle"></div>
+            <div class="card-circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section reveal">
+  <div class="testimonials-inner">
+    <div class="testimonials-header">
+      <div class="section-label">What People Say</div>
+      <h2 class="section-title">Loved by Millions</h2>
+    </div>
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carousel-track"></div>
+    </div>
+    <div class="carousel-dots" id="carousel-dots"></div>
+  </div>
+</section>
+
+<!-- RESTAURANT FINDER -->
+<section class="finder-section reveal" id="finder">
+  <div class="finder-inner">
+    <div class="section-label">Near You</div>
+    <h2 class="section-title">Find a Restaurant</h2>
+    <p class="section-sub">Search by postcode, city, or just hit "Use My Location" — we'll do the rest.</p>
+    <div class="search-bar" role="search">
+      <input type="text" id="location-input" placeholder="Enter postcode or city..." aria-label="Location search" onkeypress="if(event.key==='Enter')searchRestaurants()">
+      <button onclick="searchRestaurants()">🔍 Search</button>
+    </div>
+    <div class="results-grid" id="results-grid"></div>
+  </div>
+</section>
+
+<!-- APP -->
+<section class="app-section reveal" id="app">
+  <div class="app-inner">
+    <div class="app-left">
+      <div class="section-label" style="background:rgba(255,199,44,0.15);color:var(--yellow);">Download Free</div>
+      <h2 class="section-title">Get the McDonald's App</h2>
+      <p class="section-sub">Exclusive deals, mobile ordering, reward tracking, and more — all in your pocket.</p>
+      <div class="app-btns">
+        <a class="btn-store" href="#" onclick="showToast('📱 Redirecting to App Store...');return false;">
+          <span class="store-icon">🍎</span>
+          <span class="store-text">
+            <span class="store-sub">Download on the</span>
+            <span class="store-name">App Store</span>
+          </span>
+        </a>
+        <a class="btn-store" href="#" onclick="showToast('🤖 Redirecting to Google Play...');return false;">
+          <span class="store-icon">▶️</span>
+          <span class="store-text">
+            <span class="store-sub">Get it on</span>
+            <span class="store-name">Google Play</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <div class="phone-mockup" aria-hidden="true">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-logo">M</div>
+        <div class="phone-card">
+          <div class="phone-card-title">🔥 TODAY'S DEAL</div>
+          <div class="phone-card-text">2 Big Macs for $9 — Limited!</div>
+        </div>
+        <div class="phone-card">
+          <div class="phone-card-title">⭐ YOUR REWARDS</div>
+          <div class="phone-card-text">250 pts — 250 to next reward</div>
+        </div>
+        <div class="phone-card">
+          <div class="phone-card-title">📍 NEAREST STORE</div>
+          <div class="phone-card-text">0.4 mi — Open until 11 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo-text">M</span>
+      <p>Serving smiles since 1940. Quality food, unbeatable value, and a smile with every order.</p>
+      <div class="footer-newsletter">
+        <input type="email" placeholder="Your email address" aria-label="Newsletter email">
+        <button onclick="showToast('✅ Subscribed! Great deals coming your way.')">Subscribe</button>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="#menu">Burgers</a></li>
+        <li><a href="#menu">Chicken</a></li>
+        <li><a href="#menu">Sides &amp; Snacks</a></li>
+        <li><a href="#menu">Desserts</a></li>
+        <li><a href="#menu">Happy Meal</a></li>
+        <li><a href="#menu">McCafé</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Franchising</a></li>
+        <li><a href="#">Investors</a></li>
+        <li><a href="#">News</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Nutrition Info</a></li>
+        <li><a href="#">Allergen Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Accessibility</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 McDonald's Corporation. All rights reserved. I'm Lovin' It®</p>
+    <div class="social-links">
+      <a class="social-btn" href="#" aria-label="Twitter">𝕏</a>
+      <a class="social-btn" href="#" aria-label="Instagram">📸</a>
+      <a class="social-btn" href="#" aria-label="Facebook">👍</a>
+      <a class="social-btn" href="#" aria-label="TikTok">🎵</a>
+      <a class="social-btn" href="#" aria-label="YouTube">▶</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CART OVERLAY + DRAWER -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Shopping cart">
+  <div class="cart-header">
+    <h3>🛒 Your Order</h3>
+    <button class="cart-close" onclick="toggleCart()" aria-label="Close cart">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div class="cart-footer" id="cart-footer" style="display:none;">
+    <div class="cart-total">
+      <span>Subtotal</span>
+      <span id="cart-total">$0.00</span>
+    </div>
+    <button class="btn-checkout" onclick="checkout()">Place Order →</button>
+    <button class="btn-clear" onclick="clearCart()">Clear cart</button>
+  </div>
+</div>
+
+<!-- DEALS MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <span class="modal-emoji" id="modal-emoji">🎉</span>
+    <h3 id="modal-title">Deal Unlocked!</h3>
+    <p id="modal-desc">Show this code at the counter or enter it at checkout online.</p>
+    <div class="promo-code" id="modal-code" onclick="copyCode()" title="Click to copy">MCDS2025</div>
+    <button class="modal-close" onclick="closeModal()">Got it — Let's Eat!</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// ===== DATA =====
+const menuItems = [
+  { emoji:'🍔', name:'Big Mac', desc:'Two beef patties, special sauce, lettuce, cheese, pickles, onions on a sesame bun.', price:5.99 },
+  { emoji:'🍗', name:'McChicken', desc:'A crispy chicken patty with shredded lettuce and creamy mayo on a toasted bun.', price:4.49 },
+  { emoji:'🍟', name:'Large Fries', desc:'Golden, crispy fries made from 100% real potatoes. The perfect side every time.', price:3.29 },
+  { emoji:'🍦', name:'McFlurry Oreo', desc:'Creamy soft-serve swirled with crushed Oreo cookie pieces. Cold, sweet bliss.', price:3.99 },
+  { emoji:'🐟', name:'Filet-O-Fish', desc:'A steamed bun, melted cheese, and a crispy fish fillet with tangy tartar sauce.', price:4.79 },
+  { emoji:'🎁', name:'Happy Meal', desc:'Kid\'s burger or nuggets with fries, a drink, and a surprise toy to make their day.', price:6.49 },
+];
+
+const deals = [
+  { emoji:'🍔', title:'2 Big Macs for $9', desc:'Double the beef, half the guilt. Grab a friend and share the deal.', savings:'Save $2.98', code:'2MACS9' },
+  { emoji:'🍦', title:'Free McFlurry', desc:'Get a free McFlurry with any Large Meal purchase. Because you deserve it.', savings:'Worth up to $3.99', code:'MCFLURRY' },
+  { emoji:'📱', title:'20% Off App Order', desc:'Download the app, place your first order, and save 20% automatically.', savings:'No minimum spend', code:'APP20OFF' },
+];
+
+const reviews = [
+  { stars:5, text:'"The app makes ordering so smooth — I literally skip the queue every time. Big Mac hits different when you\'re not waiting 15 minutes for it."', name:'Sarah M.', tag:'Verified Customer', initials:'SM' },
+  { stars:5, text:'"McDonald\'s rewards programme is genuinely great. I\'ve gotten so many free items. Can\'t believe I waited this long to sign up."', name:'James K.', tag:'MyMcDonald\'s Member', initials:'JK' },
+  { stars:5, text:'"Late night fries at 1am never disappoint. Drive-thru is fast, the food is always hot, and the staff are actually lovely."', name:'Priya D.', tag:'Verified Customer', initials:'PD' },
+  { stars:5, text:'"Happy Meals make my kids SO happy every single time. Consistent quality everywhere we go — even on holiday abroad."', name:'Tom R.', tag:'Regular Customer', initials:'TR' },
+  { stars:5, text:'"The McFlurry is the only dessert that matters. Oreo flavour specifically. I will die on this hill."', name:'Emma L.', tag:'Dessert Enthusiast', initials:'EL' },
+];
+
+const locations = [
+  { name:'McDonald\'s Midtown', addr:'341 W 42nd St, New York, NY 10036', dist:'0.3 mi', open:true, drivethru:true },
+  { name:'McDonald\'s Times Square', addr:'1560 Broadway, New York, NY 10036', dist:'0.7 mi', open:true, drivethru:false },
+  { name:'McDonald\'s Penn Station', addr:'8th Ave & 31st St, New York, NY 10001', dist:'1.1 mi', open:false, drivethru:true },
+];
+
+// ===== CART =====
+let cart = JSON.parse(localStorage.getItem('mcds-cart') || '[]');
+
+function saveCart() { localStorage.setItem('mcds-cart', JSON.stringify(cart)); }
+
+function updateCartBadge() {
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  const badge = document.getElementById('cart-badge');
+  badge.style.display = total > 0 ? 'flex' : 'none';
+  badge.textContent = total;
+}
+
+function addToCart(idx) {
+  const item = menuItems[idx];
+  const existing = cart.find(i => i.name === item.name);
+  if (existing) existing.qty++;
+  else cart.push({ ...item, qty: 1 });
+  saveCart();
+  updateCartBadge();
+  renderCartItems();
+  showToast('✓ Added ' + item.name + ' to your order');
+  const btn = document.querySelectorAll('.btn-add')[idx];
+  btn.textContent = '✓ Added!';
+  btn.classList.add('added');
+  setTimeout(() => { btn.textContent = 'Add to Cart'; btn.classList.remove('added'); }, 1500);
+}
+
+function renderCartItems() {
+  const list = document.getElementById('cart-items-list');
+  const footer = document.getElementById('cart-footer');
+  if (cart.length === 0) {
+    list.innerHTML = '<div class="cart-empty"><span class="empty-icon">🛒</span><p style="font-weight:700;color:var(--dark);font-size:1rem;margin-bottom:0.5rem;">Your cart is empty</p><p>Add something delicious from the menu!</p></div>';
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = 'block';
+  list.innerHTML = cart.map((item, i) => `
+    <div class="cart-item">
+      <span class="cart-item-emoji">${item.emoji}</span>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
+      </div>
+      <div class="cart-item-qty">
+        <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+        <span class="qty-num">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+      </div>
+    </div>
+  `).join('');
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('cart-total').textContent = '$' + total.toFixed(2);
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  saveCart();
+  updateCartBadge();
+  renderCartItems();
+}
+
+function clearCart() {
+  cart = [];
+  saveCart();
+  updateCartBadge();
+  renderCartItems();
+}
+
+function checkout() {
+  cart = [];
+  saveCart();
+  updateCartBadge();
+  renderCartItems();
+  toggleCart();
+  showToast('🎉 Order placed! Get ready for greatness.');
+}
+
+function toggleCart() {
+  document.getElementById('cart-overlay').classList.toggle('open');
+  document.getElementById('cart-drawer').classList.toggle('open');
+  renderCartItems();
+}
+
+// ===== RENDER MENU =====
+function renderMenu() {
+  document.getElementById('menu-grid').innerHTML = menuItems.map((item, i) => `
+    <div class="menu-card reveal">
+      <span class="item-emoji">${item.emoji}</span>
+      <h3>${item.name}</h3>
+      <p>${item.desc}</p>
+      <span class="menu-price">$${item.price.toFixed(2)}</span>
+      <button class="btn-add" onclick="addToCart(${i})">Add to Cart</button>
+    </div>
+  `).join('');
+  observeReveal();
+}
+
+// ===== RENDER DEALS =====
+function renderDeals() {
+  document.getElementById('deals-grid').innerHTML = deals.map(d => `
+    <div class="deal-card reveal">
+      <span class="limited-badge">LIMITED</span>
+      <span class="deal-emoji">${d.emoji}</span>
+      <h3>${d.title}</h3>
+      <p>${d.desc}</p>
+      <span class="deal-savings">💰 ${d.savings}</span>
+      <button class="btn-deal" onclick="showDealModal('${d.emoji}','${d.title}','${d.desc}','${d.code}')">Grab This Deal →</button>
+    </div>
+  `).join('');
+  observeReveal();
+}
+
+// ===== DEAL MODAL =====
+function showDealModal(emoji, title, desc, code) {
+  document.getElementById('modal-emoji').textContent = emoji;
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-desc').textContent = desc + ' Use the promo code below:';
+  document.getElementById('modal-code').textContent = code;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function copyCode() {
+  const code = document.getElementById('modal-code').textContent;
+  navigator.clipboard?.writeText(code).catch(()=>{});
+  showToast('📋 Code copied: ' + code);
+}
+
+// ===== RESTAURANT FINDER =====
+function searchRestaurants() {
+  const val = document.getElementById('location-input').value.trim();
+  if (!val) { showToast('📍 Please enter a location to search'); return; }
+  const grid = document.getElementById('results-grid');
+  grid.style.display = 'grid';
+  grid.innerHTML = locations.map(l => `
+    <div class="result-card">
+      <div class="result-top">
+        <div class="result-name">${l.name}</div>
+        <span class="${l.open ? 'open-badge' : 'closed-badge'}">${l.open ? '● Open' : '● Closed'}</span>
+      </div>
+      <div class="result-addr">${l.addr}</div>
+      <div class="result-meta">
+        <span>📍 ${l.dist}</span>
+        ${l.drivethru ? '<span>🚗 Drive-Thru</span>' : '<span>🚶 Walk-In</span>'}
+      </div>
+      <button class="btn-directions" onclick="showToast('🗺️ Opening directions for ${l.name}')">Get Directions</button>
+    </div>
+  `).join('');
+}
+
+// ===== TESTIMONIALS CAROUSEL =====
+let carouselIdx = 0;
+function renderCarousel() {
+  const track = document.getElementById('carousel-track');
+  const dotsEl = document.getElementById('carousel-dots');
+  track.innerHTML = reviews.map(r => `
+    <div class="review-card">
+      <div class="stars">${'★'.repeat(r.stars)}</div>
+      <p class="review-text">${r.text}</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">${r.initials}</div>
+        <div>
+          <div class="reviewer-name">${r.name}</div>
+          <div class="reviewer-tag">${r.tag}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  dotsEl.innerHTML = reviews.map((_, i) => `<button class="dot ${i===0?'active':''}" onclick="goToSlide(${i})" aria-label="Review ${i+1}"></button>`).join('');
+}
+
+function goToSlide(idx) {
+  carouselIdx = idx;
+  const isMobile = window.innerWidth <= 900;
+  document.getElementById('carousel-track').style.transform = `translateX(calc(-${idx * (isMobile ? 100 : 33.333)}% - ${idx * (isMobile ? 0 : 0.5)}rem))`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+setInterval(() => {
+  carouselIdx = (carouselIdx + 1) % reviews.length;
+  goToSlide(carouselIdx);
+}, 4000);
+
+// ===== COUNTDOWN TIMER =====
+function updateTimer() {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(23, 59, 59, 0);
+  const diff = midnight - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('t-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('t-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('t-s').textContent = String(s).padStart(2,'0');
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== SCROLL REVEAL =====
+function observeReveal() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+// ===== NAVBAR SCROLL =====
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ===== PROGRESS BAR ANIMATION =====
+const progressObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('progress-fill').style.width = '50%';
+      progressObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+progressObs.observe(document.querySelector('.rewards-section'));
+
+// ===== MOBILE MENU =====
+function toggleMobileMenu() {
+  const links = document.querySelector('.nav-links');
+  const nav = document.getElementById('navbar');
+  if (links.style.display === 'flex') {
+    links.style.display = 'none';
+  } else {
+    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(27,25,20,0.97);padding:1rem 5% 1.5rem;gap:1rem;z-index:999;backdrop-filter:blur(12px);';
+    nav.classList.add('scrolled');
+  }
+}
+
+// ===== INIT =====
+renderMenu();
+renderDeals();
+renderCarousel();
+updateCartBadge();
+observeReveal();
+</script>
+</body>
+</html>
